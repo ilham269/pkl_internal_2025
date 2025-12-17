@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminProductController;
 
 
 Route::get('/', function () {
