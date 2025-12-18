@@ -137,7 +137,7 @@ class Product extends Model
     public function getImageUrlAttribute(): string
     {
         if ($this->primaryImage) {
-            return $this->primaryImage->image_path;
+            return $this->primaryImage->image_url;
         }
         return asset('images/no-image.png');
     }
