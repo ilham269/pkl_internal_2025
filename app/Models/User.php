@@ -57,14 +57,6 @@ class User extends Authenticatable
     }
 
     /**
-     * User memiliki banyak item wishlist.
-     */
-    public function wishlists()
-    {
-        return $this->hasMany(Wishlist::class);
-    }
-
-    /**
      * User memiliki banyak pesanan.
      */
     public function orders()
@@ -102,11 +94,15 @@ class User extends Authenticatable
     /**
      * Cek apakah produk ada di wishlist user.
      */
-    public function hasInWishlist(Product $product): bool
+    public function wishlists()
     {
-        return $this->wishlists()
-            ->where('product_id', $product->id)
-            ->exists();
+        // Relasi User ke Product melalui tabel wishlists
+        return $this->belongsToMany(Product::class, 'wishlists')
+            ->withTimestamps(); // Agar created_at/updated_at di pivot terisi
+    }
+    public function hasInWishlist(Product $product)
+    {
+        return $this->wishlists()->where('product_id', $product->id)->exists();
     }
     public function getAvatarUrlAttribute(): string
     {

@@ -6,7 +6,7 @@
 <div class="card product-card h-100 border-0 shadow-sm">
     {{-- Product Image --}}
     <div class="position-relative">
-        <a href="{{ route('catalog.show', $product->slug) }}">
+        <a href="">
             <img src="{{ $product->image_url }}"
                  class="card-img-top"
                  alt="{{ $product->name }}"
@@ -37,7 +37,7 @@
 
         {{-- Product Name --}}
         <h6 class="card-title mb-2">
-            <a href="{{ route('catalog.show', $product->slug) }}"
+            <a href=""
                class="text-decoration-none text-dark stretched-link">
                 {{ Str::limit($product->name, 40) }}
             </a>
@@ -84,6 +84,10 @@
                     Tambah Keranjang
                 @endif
             </button>
+            <button onclick="toggleWishlist({{ $product->id }})"
+        class="wishlist-btn-{{ $product->id }} btn btn-light btn-sm rounded-circle p-2 transition">
+    <i class="bi {{ Auth::check() && Auth::user()->hasInWishlist($product) ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary' }} fs-5"></i>
+</button>
         </form>
     </div>
 </div>

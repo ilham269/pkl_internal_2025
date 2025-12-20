@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; // Tambahkan import untuk konsistensi
 use Symfony\Component\HttpFoundation\Response;
 
+
 class AdminMiddleware
 {
     /**

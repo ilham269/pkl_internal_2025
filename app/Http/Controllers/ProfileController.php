@@ -22,6 +22,7 @@ class ProfileController extends Controller
             // Kirim data user yang sedang login ke view
             'user' => $request->user(),
         ]);
+
     }
 
     /**

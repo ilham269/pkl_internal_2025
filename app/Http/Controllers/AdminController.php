@@ -1,72 +1,61 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
 use Illuminate\Http\Request;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\OrderItem;
 
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan Dashboard Admin
      */
-    public function index()
-    {
-        //
-    }
     public function dashboard()
     {
-        $total_user = User::count();
+        // Hitung statistik utama
+        $stats = [
+            // Total pendapatan dari semua pesanan yang sudah selesai (status 'completed' atau 'delivered')
+            'total_revenue' => Order::whereIn('status', ['completed', 'delivered'])
+                ->sum('total_amount'),
 
-        return view('admin.dashboard',compact(
-            'total_user',
-        ));
-    }
+            // Total semua pesanan
+            'total_orders' => Order::count(),
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+            // Pesanan yang perlu diproses (status 'pending' atau 'processing')
+            'pending_orders' => Order::whereIn('status', ['pending', 'processing'])->count(),
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            // Produk dengan stok menipis (misal stok <= 10)
+            'low_stock' => Product::where('stock', '<=', 10)->count(),
+        ];
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // Ambil 8 pesanan terbaru beserta relasi user
+        $recentOrders = Order::with('user')
+            ->latest()
+            ->take(8)
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        // Tambahkan accessor sementara jika belum ada di model Order
+        // Kita tambahkan properti dinamis untuk status_color dan order_number
+        $recentOrders->each(function ($order) {
+            // Warna badge berdasarkan status
+            $order->status_color = match ($order->status) {
+                'pending'     => 'warning',
+                'processing'  => 'info',
+                'shipped'     => 'primary',
+                'delivered'   => 'success',
+                'completed'   => 'success',
+                'cancelled'   => 'danger',
+                default       => 'secondary',
+            };
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            // Jika belum ada kolom order_number, buat otomatis
+            if (!$order->order_number) {
+                $order->order_number = 'ORD-' . str_pad($order->id, 6, '0', STR_PAD_LEFT);
+            }
+        });
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.dashboard', compact('stats', 'recentOrders'));
     }
 }
