@@ -1,0 +1,35 @@
+
+    body {
+        background-color: #f9fafb;
+    }
+
+    .hero-blibli {
+        background: linear-gradient(135deg, #0d6efd, #2563eb);
+        border-radius: 0 0 32px 32px;
+    }
+
+    .hero-title {
+        font-weight: 800;
+        line-height: 1.2;
+    }
+
+    .section-title {
+        font-weight: 700;
+    }
+
+    .category-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,.06);
+    }
+
+    .promo-card {
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
