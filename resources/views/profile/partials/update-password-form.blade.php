@@ -1,18 +1,19 @@
 {{-- resources/views/profile/partials/update-password-form.blade.php --}}
 
-<p class="text-muted small">Gunakan password yang kuat demi keamanan akun.</p>
+<p class="text-muted small">Pastikan akun kamu aman dengan menggunakan password yang panjang dan acak.</p>
 
-<form method="POST" action="{{ route('profile.password.update') }}">
+<form method="post" action="{{ route('profile.password.update') }}">
     @csrf
-    @method('PUT')
+    @method('put')
 
     {{-- Current Password --}}
     <div class="mb-3">
-        <label class="form-label">Password Saat Ini</label>
+        <label for="current_password" class="form-label">Password Saat Ini</label>
         <input type="password"
                name="current_password"
-               class="form-control @error('current_password', 'updatePassword') is-invalid @enderror">
-
+               id="current_password"
+               class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
+               autocomplete="current-password">
         @error('current_password', 'updatePassword')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
@@ -20,27 +21,38 @@
 
     {{-- New Password --}}
     <div class="mb-3">
-        <label class="form-label">Password Baru</label>
+        <label for="password" class="form-label">Password Baru</label>
         <input type="password"
                name="password"
-               class="form-control @error('password', 'updatePassword') is-invalid @enderror">
-
+               id="password"
+               class="form-control @error('password', 'updatePassword') is-invalid @enderror"
+               autocomplete="new-password">
         @error('password', 'updatePassword')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
     </div>
 
-    {{-- Confirm --}}
+    {{-- Confirm Password --}}
     <div class="mb-3">
-        <label class="form-label">Konfirmasi Password</label>
+        <label for="password_confirmation" class="form-label">Konfirmasi Password Baru</label>
         <input type="password"
                name="password_confirmation"
-               class="form-control">
+               id="password_confirmation"
+               class="form-control @error('password_confirmation', 'updatePassword') is-invalid @enderror"
+               autocomplete="new-password">
+        @error('password_confirmation', 'updatePassword')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
     </div>
 
-    <button class="btn btn-primary">Update Password</button>
+    <div class="d-flex align-items-center gap-3">
+        <button type="submit" class="btn btn-primary">Update Password</button>
 
-    @if (session('status') === 'password-updated')
-        <span class="text-success small ms-2">Password berhasil diperbarui</span>
-    @endif
+        @if (session('status') === 'password-updated')
+            <span class="text-success small fade-out">Saved.</span>
+            <script>
+                setTimeout(() => document.querySelector('.fade-out').style.display = 'none', 2000);
+            </script>
+        @endif
+    </div>
 </form>

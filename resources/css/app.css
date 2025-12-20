@@ -80,3 +80,8 @@ footer {
   font-size: 0.75rem;
   font-weight: 600;
 }
+.hero-gradient {
+    /* Gradasi dari Biru (#007bff) ke Indigo (#6610f2) dengan sudut 135 derajat */
+    background: linear-gradient(135deg, #000000 0%, #411A09 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
