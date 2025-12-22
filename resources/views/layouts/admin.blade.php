@@ -190,6 +190,12 @@
     {{-- ===== MAIN CONTENT ===== --}}
     <div class="main-content">
 
+        {{-- Page Title --}}
+        <div class="px-4 pt-4">
+            <h1 class="h3 mb-0">@yield('title', 'Dashboard')</h1>
+
+    </div>
+
         {{-- Topbar --}}
         <div class="topbar">
             <h5 class="mb-0 fw-bold">@yield('page-title', 'Dashboard')</h5>
