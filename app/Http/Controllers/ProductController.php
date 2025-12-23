@@ -136,6 +136,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             // 1. Update data dasar produk
+                
             $product->update($request->validated());
 
             // 2. Upload gambar BARU (jika user menambah gambar)

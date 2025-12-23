@@ -4,21 +4,43 @@
 
 @section('content')
 
+{{-- SWIPER CDN (SATU FILE) --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
 <style>
     body {
         background-color: #f9fafb;
     }
 
-    .hero-blibli {
-        background: linear-gradient(135deg, #0d6efd, #2563eb);
-        border-radius: 0 0 32px 32px;
+    /* ===== HERO BLIBLI STYLE ===== */
+    .heroSwiper {
+        width: 100%;
+        border-radius: 24px;
+        overflow: hidden;
     }
 
-    .hero-title {
-        font-weight: 800;
-        line-height: 1.2;
+    .hero-img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
     }
 
+    .swiper-pagination {
+        text-align: right;
+        padding-right: 16px;
+        padding-bottom: 10px;
+    }
+
+    .swiper-pagination-bullet {
+        background: #fff;
+        opacity: .6;
+    }
+
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+
+    /* ===== SECTION STYLE ===== */
     .section-title {
         font-weight: 700;
     }
@@ -40,29 +62,34 @@
     }
 </style>
 
-{{-- HERO --}}
-<section class="hero-blibli text-white py-5 mb-5">
+{{-- HERO BANNER (MIRIP BLIBLI) --}}
+<section class="mb-5">
     <div class="container-fluid px-lg-5">
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <h1 class="hero-title display-5 mb-3">
-                    Belanja Online Mudah & Terpercaya
-                </h1>
-                <p class="fs-5 opacity-75 mb-4">
-                    Temukan produk pilihan dengan harga terbaik.
-                    Pengiriman cepat & aman ke seluruh Indonesia.
-                </p>
-                <a href="{{ route('catalog.index') }}"
-                   class="btn btn-light btn-lg fw-semibold px-4">
-                    <i class="bi bi-bag me-2"></i>Mulai Belanja
-                </a>
+        <div class="swiper heroSwiper">
+            <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                    <img src="https://www.static-src.com/siva/asset/12_2025/carousel-desktop-NVIDIA-PC-Des.jpg?w=1200"
+                         class="hero-img">
+                </div>
+
+                <div class="swiper-slide">
+                    <img src="https://www.static-src.com/siva/asset/12_2025/Homepage_Desktop_Asics-gelnimbus28.jpg?w=1200"
+                                 class="img-fluid hero-img">
+                </div>
+
+                <div class="swiper-slide">
+                    <img src="https://www.static-src.com/siva/asset/12_2025/NPI-iPad-Pro-M5-dw2000x500.jpg?w=1200"
+                         class="hero-img">
+                </div>
+                <div class="swiper-slide">
+                    <img src="https://www.static-src.com/siva/asset/12_2025/royco-blm-nov24-homepage-web.jpg?w=1200"
+                         class="hero-img">
+                </div>
+
             </div>
 
-            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
-                <img src="https://www.apple.com/v/iphone/home/cg/images/overview/select/iphone_17pro__0s6piftg70ym_large.jpg"
-                     class="img-fluid"
-                     style="max-height:380px;">
-            </div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
 </section>
@@ -121,6 +148,7 @@
 <section class="mb-5">
     <div class="container-fluid px-lg-5">
         <div class="row g-4">
+
             <div class="col-md-6">
                 <div class="promo-card bg-warning text-dark p-4 h-100">
                     <h4 class="fw-bold">Flash Sale</h4>
@@ -143,6 +171,7 @@
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
@@ -163,5 +192,21 @@
         </div>
     </div>
 </section>
+
+{{-- SWIPER JS --}}
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+new Swiper(".heroSwiper", {
+    loop: true,
+    autoplay: {
+        delay: 4500,
+        disableOnInteraction: false,
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+});
+</script>
 
 @endsection
