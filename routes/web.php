@@ -16,7 +16,18 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\MidtransNotificationController;
 
+
+
+//well
+// MIDTRANS WEBHOOK
+// Route ini HARUS public (tanpa auth middleware)
+// Karena diakses oleh SERVER Midtrans, bukan browser user
+// ============================================================
+Route::post('midtrans/notification', [MidtransNotificationController::class, 'handle'])
+    ->name('midtrans.notification');
 
 //-----------------------------------------
 //crud
@@ -151,5 +162,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 Route::get('/product/{slug}', [CatalogController::class, 'show'])->name('catalog.show');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
+Route::middleware('auth')->group(function () {
+    // ... routes lainnya
+
+    // Payment Routes
+    Route::get('/orders/{order}/snap-token', [PaymentController::class, 'getSnapToken'])
+        ->name('orders.snap-token');
+    Route::get('/orders/{order}/pay', [PaymentController::class, 'show'])
+        ->name('orders.pay');
+    Route::get('/orders/{order}/success', [PaymentController::class, 'success'])
+        ->name('orders.success');
+    Route::get('/orders/{order}/pending', [PaymentController::class, 'pending'])
+        ->name('orders.pending');
+});
 
 Auth::routes();

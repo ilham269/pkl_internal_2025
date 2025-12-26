@@ -90,7 +90,7 @@ class CheckoutController extends Controller
         // kosongkan cart
         $user->cart->items()->delete();
 
-        return redirect()->route('orders.index')
+        return redirect()->route('orders.show', $order->id)
             ->with('success', 'Pesanan berhasil dibuat dengan nomor ' . $order->order_number);
     }
 }

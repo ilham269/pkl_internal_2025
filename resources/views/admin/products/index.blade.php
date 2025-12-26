@@ -144,60 +144,104 @@
             @method('PUT')
 
             <div class="modal-header">
-                <h5 class="modal-title">Edit Produk</h5>
+                <h5 class="modal-title fw-bold">Edit Produk: {{ $product->name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Nama Produk</label>
-                    <input type="text" name="name" class="form-control" value="{{ $product->name }}" required>
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Kategori</label>
-                    <select name="category_id" class="form-select">
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
                 <div class="row">
+                    {{-- Nama Produk --}}
+                    <div class="col-md-8 mb-3">
+                        <label class="form-label fw-bold">Nama Produk</label>
+                        <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
+                    </div>
+
+                    {{-- Kategori --}}
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold">Kategori</label>
+                        <select name="category_id" class="form-select" required>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ (old('category_id', $product->category_id) == $category->id) ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Harga & Diskon --}}
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Harga (Rp)</label>
-                        <input type="number" name="price" class="form-control" value="{{ $product->price }}" required>
+                        <input type="number" name="price" class="form-control" value="{{ old('price', (int)$product->price) }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Harga Diskon (Opsional)</label>
+                        <input type="number" name="discount_price" class="form-control" value="{{ old('discount_price', $product->discount_price ? (int)$product->discount_price : '') }}">
                     </div>
 
+                    {{-- Stok & Berat --}}
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Stok</label>
-                        <input type="number" name="stock" class="form-control" value="{{ $product->stock }}" required>
+                        <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}" required>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-bold">Berat (gram)</label>
-                        <input type="number" name="weight" class="form-control" value="{{ $product->weight }}" required>
+                        <input type="number" name="weight" class="form-control" value="{{ old('weight', $product->weight) }}" required>
                     </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Gambar (Opsional)</label>
-                        <input type="file" name="image" class="form-control">
+
+                    {{-- Deskripsi --}}
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Deskripsi</label>
+                        <textarea name="description" class="form-control" rows="3">{{ old('description', $product->description) }}</textarea>
                     </div>
-                </div>
 
+                    {{-- Gambar yang sudah ada --}}
+                    <div class="col-12 mb-2">
+                        <label class="form-label fw-bold d-block">Gambar Saat Ini</label>
+                        <div class="d-flex gap-2 flex-wrap mb-2">
+                            @forelse($product->images as $img)
+                                <div class="position-relative">
+                                    <img src="{{ asset('storage/' . $img->image_path) }}" alt="" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                                    @if($img->is_primary)
+                                        <span class="badge bg-primary position-absolute top-0 start-0" style="font-size: 0.6rem;">Utama</span>
+                                    @endif
+                                </div>
+                            @empty
+                                <small class="text-muted">Tidak ada gambar.</small>
+                            @endforelse
+                        </div>
+                    </div>
 
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" name="is_active" value="1"
-                        {{ $product->is_active ? 'checked' : '' }}>
-                    <label class="form-check-label">Aktif</label>
+                    {{-- Upload Gambar Baru --}}
+                    <div class="col-12 mb-3">
+                        <label class="form-label fw-bold">Tambah Gambar Baru (Opsional)</label>
+                        <input type="file" name="images[]" class="form-control" multiple accept="image/*">
+                        <small class="text-muted text-xs">Akan menambah koleksi gambar produk ini.</small>
+                    </div>
+
+                    {{-- Switches --}}
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="is_active" value="1"
+                                {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
+                            <label class="form-check-label">Produk Aktif</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" name="is_featured" value="1"
+                                {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
+                            <label class="form-check-label">Produk Unggulan</label>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button class="btn btn-primary">Simpan Perubahan</button>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-check-circle me-1"></i> Simpan Perubahan
+                </button>
             </div>
         </form>
     </div>
@@ -206,63 +250,90 @@
 
 {{-- ===================== MODAL CREATE ===================== --}}
 <div class="modal fade" id="createModal" tabindex="-1">
-    <div class="modal-dialog modal-lg   ">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Produk Baru</h5>
+                <h5 class="modal-title fw-bold">Tambah Produk Baru</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Nama Produk</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Kategori</label>
-                        <select name="category_id" class="form-select" required>
-                            <option value="">Pilih Kategori...</option>
-                            @foreach($categories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
                     <div class="row">
+                        {{-- Nama Produk --}}
+                        <div class="col-md-8 mb-3">
+                            <label class="form-label fw-bold">Nama Produk</label>
+                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" required placeholder="Contoh: Kemeja Flanel">
+                        </div>
+
+                        {{-- Kategori --}}
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label fw-bold">Kategori</label>
+                            <select name="category_id" class="form-select" required>
+                                <option value="">Pilih...</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Harga & Diskon --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Harga (Rp)</label>
-                            <input type="number" name="price" class="form-control" value="{{ old('price') }}" required>
+                            <input type="number" name="price" class="form-control" value="{{ old('price') }}" required placeholder="100000">
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Harga Diskon (Opsional)</label>
+                            <input type="number" name="discount_price" class="form-control" value="{{ old('discount_price') }}" placeholder="85000">
+                        </div>
+
+                        {{-- Stok & Berat --}}
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Stok</label>
-                            <input type="number" name="stock" class="form-control" value="{{ old('stock') }}" required>
+                            <input type="number" name="stock" class="form-control" value="{{ old('stock') }}" required placeholder="10">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Berat (gram)</label>
+                            <input type="number" name="weight" class="form-control" value="{{ old('weight') }}" required placeholder="500">
+                        </div>
+
+                        {{-- Deskripsi --}}
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Deskripsi</label>
+                            <textarea name="description" class="form-control" rows="3">{{ old('description') }}</textarea>
+                        </div>
+
+                        {{-- Multi-Upload Gambar --}}
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-bold">Gambar Produk (Bisa pilih banyak)</label>
+                            <input type="file" name="images[]" class="form-control" multiple accept="image/*">
+                            <small class="text-muted">Klik sambil tahan 'Ctrl' untuk pilih lebih dari 1 foto.</small>
+                        </div>
+
+                        {{-- Status Switches --}}
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_active" value="1" {{ old('is_active', '1') ? 'checked' : '' }}>
+                                <label class="form-check-label">Aktifkan Produk</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
+                                <label class="form-check-label">Jadikan Unggulan</label>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Berat (gram)</label>
-                        <input type="number" name="weight" class="form-control" value="{{ old('weight') }}" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-bold">Gambar (Opsional)</label>
-                        <input type="file" name="image" class="form-control">
-                    </div>
-                    </div>
-
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="is_active" value="1"{{ old('is_active') ? 'checked' : '' }}>
-                        <label class="form-check-label">Aktif</label>
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan Produk</button>
-            </div>
-                </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save me-1"></i> Simpan Produk
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
