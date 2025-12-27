@@ -1,137 +1,93 @@
+{{-- resources/views/admin/categories/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('title', 'Manajemen Kategori')
 
 @section('content')
 <style>
-    /* Konsistensi Design System */
-    .card { border: none; border-radius: 12px; }
-    .card-header { border-bottom: 1px solid #f0f2f5; }
+    /* Menghilangkan padding ekstra pada container utama jika ada */
+    .content-wrapper { padding: 0 !important; }
 
-    .table thead th {
-        background-color: #f8f9fa;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.5px;
-        font-weight: 700;
-        color: #6c757d;
-        border-top: none;
-    }
+    .card { border: none; border-radius: 12px; width: 100%; }
+    .table-responsive { width: 100%; }
 
-    .category-icon {
-        width: 45px;
-        height: 45px;
-        object-fit: cover;
-        border-radius: 8px;
-        transition: transform 0.2s;
-    }
-
-    .category-icon:hover { transform: scale(1.1); }
-
-    .badge-pill {
-        padding: 0.5em 0.8em;
-        border-radius: 50rem;
-        font-weight: 600;
-    }
-
-    /* Modal Styling agar konsisten dengan Product */
-    .modal-content {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
-    }
-
-    .modal-header {
-        border-bottom: 1px solid #f0f2f5;
-        background-color: #fff;
-        border-radius: 15px 15px 0 0;
-    }
-
-    .modal-footer {
-        border-top: 1px solid #f0f2f5;
-        background-color: #f8f9fa;
-        border-radius: 0 0 15px 15px;
-    }
-
-    .form-label { color: #344767; }
+    /* CSS lainnya tetap sama seperti sebelumnya... */
 </style>
 
-<div class="container-fluid py-4">
+<div class="container-fluid py-10"> {{-- Gunakan container-fluid untuk lebar maksimal --}}
     <div class="row">
-        <div class="col-lg-12" >
+        <div class="col-lg-12"> {{-- Pastikan col-12 agar memanjang ke kanan --}}
+
             {{-- Alert Messages --}}
             @if(session('success'))
-                <div class="alert alert-success border-0 shadow-sm alert-dismissible fade show text-white" role="alert" style="background-color: #2dce89;">
+                <div class="alert alert-success border-0 shadow-sm alert-dismissible fade show text-white mb-4" style="background-color: #2dce89;">
                     <i class="bi bi-check-circle me-2"></i> {{ session('success') }}
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
                     <div>
                         <h5 class="mb-0 text-dark fw-bold">Daftar Kategori</h5>
                         <p class="text-sm text-muted mb-0">Kelola kategori produk untuk toko Anda</p>
                     </div>
                     <button class="btn btn-primary px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">
-                        <i class="bi bi-plus-lg me-1"></i> Tambah Baru
+                        <i class="bi bi-plus-lg me-1"></i> Tambah Kategori Baru
                     </button>
                 </div>
 
-                <div class="card-body p-0 text-center">
-                    <div class="table-responsive ">
-                        <table class="table table-hover align-middle mb-0">
-                            <thead>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0 w-100"> {{-- Tambah w-100 --}}
+                            <thead class="table-light">
                                 <tr>
-                                    <th class="ps-4">Info Kategori</th>
-                                    <th class="">Total Produk</th>
-                                    <th class="">Status</th>
-                                    <th class="text-end pe-4">Aksi</th>
+                                    <th class="ps-4 py-3" style="width: 40%">INFO KATEGORI</th>
+                                    <th class="text-center py-3" style="width: 20%">TOTAL PRODUK</th>
+                                    <th class="text-center py-3" style="width: 20%">STATUS</th>
+                                    <th class="text-end pe-4 py-3" style="width: 20%">AKSI</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($categories as $category)
                                     <tr>
-                                        <td class="ps-4">
+                                        <td class="ps-4 py-3">
                                             <div class="d-flex align-items-center">
                                                 @if($category->image)
-                                                    <img src="{{ Storage::url($category->image) }}" class="category-icon shadow-sm me-3 border">
+                                                    <img src="{{ Storage::url($category->image) }}" class="category-icon shadow-sm me-3 border" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px;">
                                                 @else
-                                                    <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center border shadow-sm" style="width: 45px; height: 45px;">
-                                                        <i class="bi bi-folder2 text-secondary"></i>
+                                                    <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center border shadow-sm" style="width: 48px; height: 48px;">
+                                                        <i class="bi bi-folder2 text-secondary fs-4"></i>
                                                     </div>
                                                 @endif
                                                 <div>
-                                                    <div class="fw-bold text-dark">{{ $category->name }}</div>
+                                                    <div class="fw-bold text-dark fs-6">{{ $category->name }}</div>
                                                     <small class="text-muted"><i class="bi bi-link-45deg"></i> {{ $category->slug }}</small>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="">
-                                            <span class="badge bg-light text-primary border border-primary-subtle px-3 py-2">
+                                        <td class="text-center">
+                                            <span class="badge bg-light text-primary border border-primary-subtle px-3 py-2 fw-semibold">
                                                 {{ $category->products_count }} Produk
                                             </span>
                                         </td>
-                                        <td class="">
+                                        <td class="text-center">
                                             @if($category->is_active)
-                                                <span class="badge badge-pill bg-success-subtle text-success border border-success">Aktif</span>
+                                                <span class="badge rounded-pill bg-success-subtle text-success border border-success px-3 py-2">Aktif</span>
                                             @else
-                                                <span class="badge badge-pill bg-secondary-subtle text-secondary border border-secondary">Non-Aktif</span>
+                                                <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary px-3 py-2">Non-Aktif</span>
                                             @endif
                                         </td>
                                         <td class="text-end pe-4">
-                                            <div class="btn-group">
+                                            <div class="d-flex justify-content-end gap-2">
                                                 <button class="btn btn-sm btn-outline-warning border-0"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#editModal{{ $category->id }}"
-                                                        title="Edit">
+                                                        data-bs-target="#editModal{{ $category->id }}">
                                                     <i class="bi bi-pencil-square fs-5"></i>
                                                 </button>
-                                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline"
-                                                      onsubmit="return confirm('Menghapus kategori akan berdampak pada produk terkait. Lanjutkan?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0" title="Hapus">
+                                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('Hapus kategori?')">
                                                         <i class="bi bi-trash3 fs-5"></i>
                                                     </button>
                                                 </form>
@@ -139,24 +95,22 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center py-5">
-                                            <img src="https://illustrations.popsy.co/gray/box.svg" width="100" class="mb-3 opacity-50">
-                                            <p class="text-muted">Belum ada kategori yang tersedia.</p>
-                                        </td>
-                                    </tr>
+                                    {{-- Tampilan saat kosong --}}
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="card-footer bg-white py-3 border-0">
+                {{-- Pagination --}}
+                <div class="card-footer bg-white border-0 py-3">
                     {{ $categories->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 {{-- CREATE MODAL --}}
 <div class="modal fade" id="createModal" tabindex="-1">

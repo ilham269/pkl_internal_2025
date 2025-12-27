@@ -19,7 +19,13 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MidtransNotificationController;
 
+//order
+Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
 
+    // Route untuk update status order
+    Route::patch('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])
+        ->name('orders.update-status');
+});
 
 //well
 // MIDTRANS WEBHOOK

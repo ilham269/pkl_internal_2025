@@ -143,7 +143,7 @@
           <h6 class="fw-bold mb-3">Aksi Cepat</h6>
 
           <div class="d-grid gap-3">
-            <a href="{{ route('admin.products.create') }}" class="btn btn-primary py-3 fw-semibold">
+            <a href="{{ route('admin.products.index') }}" class="btn btn-primary py-3 fw-semibold">
               <i class="ti ti-plus me-2"></i> Tambah Produk
             </a>
 
