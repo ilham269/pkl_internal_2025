@@ -3,9 +3,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Order;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
@@ -24,7 +27,27 @@ class OrderController extends Controller
             ->latest() // Urutkan terbaru
             ->paginate(20);
 
-        return view('admin.orders.index', compact('orders'));
+        $stats = [
+            'users'           => User::count(),
+            'products'        => Product::count(),
+            'categories'      => Category::count(),
+            'total_orders'    => Order::count(),
+            'total_revenue'   => Order::sum('total_amount'),
+            'pending_orders'  => Order::where('status', 'pending')->count(),
+            'low_stock'       => Product::where('stock', '<', 5)->count(),
+        ];
+
+        // Ambil 5 order terbaru untuk sidebar atau info tambahan
+        $recentOrders = Order::latest()->take(5)->get();
+
+        return view('admin.orders.index', compact('orders', 'recentOrders', 'stats'));
+    }
+
+    public function salesReport()
+    {
+        $users = User::latest()->get();
+        // Logic untuk menampilkan laporan penjualan
+        return view('admin.reports.sales', compact('users'));
     }
 
     /**

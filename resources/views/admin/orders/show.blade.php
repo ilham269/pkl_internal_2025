@@ -5,6 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-lg-8">
+        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary mb-3">&larr; Kembali ke Daftar Pesanan</a>
         {{-- List Item --}}
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3">
@@ -13,7 +14,7 @@
             <div class="card-body">
                 @foreach($order->items as $item)
                     <div class="d-flex mb-3">
-                        <img src="{{ $item->product->image_url }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                        <img src="{{ asset('storage/' . $item->product->image_url) }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
                         <div class="flex-grow-1">
                             <h6 class="mb-0 fw-bold">{{ $item->product->name }}</h6>
                             <small class="text-muted">{{ $item->quantity }} x Rp {{ number_format($item->price, 0, ',', '.') }}</small>
@@ -48,7 +49,7 @@
         <div class="card shadow-sm border-0 bg-light">
             <div class="card-body">
                 <h6 class="fw-bold mb-3">Update Status Order</h6>
-                <form action="{{ route('admin.orders.update-status', $order) }}" method="POST">
+                <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST">
                     @csrf
                     @method('PATCH')
 
