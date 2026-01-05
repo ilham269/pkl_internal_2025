@@ -17,7 +17,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\MidtransNotificationController;
+use App\Http\Controllers\Auth\LoginController;
+
+
+
+
+
+// Membatasi login maksimal 5 kali dalam 1 menit
+Route::post('/login', [LoginController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('login.post');
+
 
 //order
 Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -26,6 +38,16 @@ Route::middleware(['auth', 'can:admin'])->prefix('admin')->name('admin.')->group
     Route::patch('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])
         ->name('orders.update-status');
 });
+
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+
+    // Route untuk reports
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
+    });
+});
+Route::get('/reports/export-sales', [ReportController::class, 'exportSales'])
+    ->name('admin.reports.export-sales');
 
 //well
 // MIDTRANS WEBHOOK

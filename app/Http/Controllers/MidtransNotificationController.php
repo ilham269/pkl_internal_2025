@@ -7,6 +7,7 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Events\OrderPaidEvent;
 
 class MidtransNotificationController extends Controller
 {
@@ -181,4 +182,11 @@ class MidtransNotificationController extends Controller
             $payment->update(['status' => 'refunded']);
         }
     }
+    private function setSuccess(Order $order)
+{
+    $order->update([...]);
+
+    // Fire & Forget
+    event(new OrderPaidEvent($order));
+}
 }

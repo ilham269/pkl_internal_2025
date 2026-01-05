@@ -23,6 +23,11 @@ ditampilkan di @yield('content') --}}
           ================================================ method="POST" = Kirim
           data secara aman (tidak terlihat di URL) action = URL tujuan submit
           form ================================================ --}}
+          @if ($errors->has('throttle'))
+    <div class="alert alert-danger">
+        Terlalu banyak percobaan login. Silakan coba lagi dalam beberapa detik.
+    </div>
+@endif
           <form method="POST" action="{{ route('login') }}">
             {{-- ================================================ CSRF TOKEN
             ================================================ @csrf WAJIB ada di

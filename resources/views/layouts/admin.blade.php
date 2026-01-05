@@ -168,7 +168,7 @@
 
             <div class="nav-section">Laporan</div>
 
-            <a href="#" class="nav-link">
+            <a href="{{ route('admin.reports.sales') }}" class="nav-link">
                 <i class="bi bi-graph-up"></i> Penjualan
             </a>
         </nav>

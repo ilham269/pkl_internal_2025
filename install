@@ -1,0 +1,4 @@
+`composer install
+`composer run dev
+`npm install
+`npm run dev
