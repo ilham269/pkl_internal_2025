@@ -1,7 +1,7 @@
 <?php
 // app/Http/Controllers/Admin/ProductController.php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
@@ -90,7 +90,6 @@ class ProductController extends Controller
             return redirect()
                 ->route('admin.products.index')
                 ->with('success', 'Produk berhasil ditambahkan!');
-
         } catch (\Exception $e) {
             // === DB TRANSACTION ROLLBACK ===
             // Jika terjadi error APAPUN di block try, batalkan semua query yang sudah dijalankan.
@@ -136,7 +135,6 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             // 1. Update data dasar produk
-                
             $product->update($request->validated());
 
             // 2. Upload gambar BARU (jika user menambah gambar)
@@ -160,7 +158,6 @@ class ProductController extends Controller
             return redirect()
                 ->route('admin.products.index')
                 ->with('success', 'Produk berhasil diperbarui!');
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withInput()->with('error', 'Gagal update: ' . $e->getMessage());

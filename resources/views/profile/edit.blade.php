@@ -6,7 +6,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h2 class="mb-4">Profil Saya</h2>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-4">Profil Saya</h2>
+                <a href="{{ route('home') }}" class="btn btn-outline-dark btn-sm me-2 mb-4" target="_blank">
+                    <i class="bi bi-arrow-up-right-circle"></i> Kembali ke Beranda
+                </a>
+            </div>
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

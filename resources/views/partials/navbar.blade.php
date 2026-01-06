@@ -9,10 +9,12 @@
         </a>
 
         {{-- KATEGORI --}}
+        <form action="{{route('catalog.index')}}">
         <button class="btn btn-light border ms-2 d-none d-lg-flex align-items-center gap-2 blibli-category-btn">
             <i class="bi bi-grid"></i>
             <span class="fw-medium">Kategori</span>
         </button>
+        </form>
 
         {{-- MOBILE TOGGLE --}}
         <button class="navbar-toggler ms-2" type="button"
