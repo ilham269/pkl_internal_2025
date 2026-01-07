@@ -39,7 +39,8 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-
+// Pastikan name('products.show') ada di sini
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
 
 // home page

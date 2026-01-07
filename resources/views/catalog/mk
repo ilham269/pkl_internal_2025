@@ -1,0 +1,174 @@
+@extends('layouts.app')
+
+@section('content')
+<style>
+/* ================= FILTER SIDEBAR ================= */
+.filter-card {
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 18px 40px rgba(0,0,0,.08);
+  overflow: hidden;
+}
+
+/* Header */
+.filter-card .card-header {
+  background: linear-gradient(135deg, #2f80ed, #56ccf2);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 16px 18px;
+  border: none;
+}
+
+/* Body */
+.filter-card .card-body {
+  padding: 18px;
+}
+
+/* Section title */
+.filter-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* Category item */
+.filter-option {
+  padding: 10px 12px;
+  border-radius: 12px;
+  transition: .25s ease;
+  cursor: pointer;
+  background: #f9fafb;
+}
+
+.filter-option:hover {
+  background: #eef4ff;
+}
+
+.filter-option.active {
+  background: #e6f0ff;
+  font-weight: 600;
+}
+
+/* Hide default radio */
+.filter-option input {
+  display: none;
+}
+
+/* Price input */
+.filter-card input[type="number"] {
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+/* Buttons */
+.filter-card .btn {
+  border-radius: 14px;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.filter-card .btn-primary {
+  background: #2f80ed;
+  border: none;
+}
+
+.filter-card .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(47,128,237,.4);
+}
+
+/* Sticky smooth */
+.filter-card.sticky-top {
+  top: 90px;
+}
+
+/* ================= TOP BAR ================= */
+.catalog-header {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 16px 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.06);
+}
+
+/* Sorting */
+.catalog-header select {
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+</style>
+
+<div class="col-lg-3">
+  <div class="card filter-card sticky-top">
+
+    <div class="card-header">
+      Filter Produk
+    </div>
+
+    <div class="card-body">
+      <form action="{{ route('catalog.index') }}" method="GET">
+
+        @if(request('q'))
+          <input type="hidden" name="q" value="{{ request('q') }}">
+        @endif
+
+        {{-- KATEGORI --}}
+        <div class="mb-4">
+          <div class="filter-title">Kategori</div>
+
+          <div class="d-flex flex-column gap-2">
+            @foreach($categories as $cat)
+              <label class="filter-option d-flex justify-content-between align-items-center
+                {{ request('category') == $cat->slug ? 'active' : '' }}">
+                <span>{{ $cat->name }}</span>
+                <span class="text-muted small">{{ $cat->products_count }}</span>
+
+                <input type="radio"
+                  name="category"
+                  value="{{ $cat->slug }}"
+                  {{ request('category') == $cat->slug ? 'checked' : '' }}
+                  onchange="this.form.submit()">
+              </label>
+            @endforeach
+          </div>
+        </div>
+
+        {{-- HARGA --}}
+        <div class="mb-4">
+          <div class="filter-title">Rentang Harga</div>
+
+          <div class="row g-2">
+            <div class="col-6">
+              <input type="number"
+                name="min_price"
+                class="form-control form-control-sm"
+                placeholder="Min"
+                value="{{ request('min_price') }}">
+            </div>
+            <div class="col-6">
+              <input type="number"
+                name="max_price"
+                class="form-control form-control-sm"
+                placeholder="Max"
+                value="{{ request('max_price') }}">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm w-100">
+          Terapkan Filter
+        </button>
+
+        <a href="{{ route('catalog.index') }}"
+          class="btn btn-outline-secondary btn-sm w-100 mt-2">
+          Reset Filter
+        </a>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+@endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\Cart;
+
 
 class CheckoutController extends Controller
 {
@@ -20,6 +22,8 @@ class CheckoutController extends Controller
                 ->with('error', 'Keranjang kosong');
         }
 
+
+
         $cartItems = $user->cart->items;
 
         $subtotal = $cartItems->sum(
@@ -33,6 +37,7 @@ class CheckoutController extends Controller
             'cartItems',
             'subtotal',
             'shippingCost'
+
         ));
     }
 
@@ -92,5 +97,31 @@ class CheckoutController extends Controller
 
         return redirect()->route('orders.show', $order->id)
             ->with('success', 'Pesanan berhasil dibuat dengan nomor ' . $order->order_number);
+    }
+    public function direct(Request $request)
+    {
+        $user = Auth::user();
+
+        // Cek apakah produk sudah ada di cart
+        $cart = Cart::where('user_id', $user->id)
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        if ($cart) {
+            // Jika sudah ada → update qty
+            $cart->update([
+                'quantity' => $cart->quantity + $request->quantity
+            ]);
+        } else {
+            // Jika belum → buat baru
+            Cart::create([
+                'user_id'    => $user->id,
+                'product_id' => $request->product_id,
+                'quantity'   => $request->quantity,
+            ]);
+        }
+
+        // Redirect langsung ke checkout
+        return redirect()->route('checkout.index');
     }
 }
