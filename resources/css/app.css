@@ -44,6 +44,10 @@
 body {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   color: var(--text-dark);
+   background-image: url("images/bg.jpg");
+    background-size: cover;      /* menyesuaikan layar */
+    background-position: center; /* posisi tengah */
+    background-repeat: no-repeat;
 }
 
 /* Navbar Custom */

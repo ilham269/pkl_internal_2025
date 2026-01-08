@@ -31,7 +31,8 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\NewsletterController;
 
 // ================================================
 // ROUTE PUBLIK (Bisa diakses siapa saja)
@@ -39,6 +40,19 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::post('/newsletter', [NewsletterController::class, 'store'])
+    ->name('newsletter.store');
+
+//promo
+Route::get('/promo', [PromoController::class, 'index'])->name('promo.index');
+
+
+
+//admin
+
+Route::get('/admin', [AdminController::class, 'index']);
+
+
 // Pastikan name('products.show') ada di sini
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 

@@ -2,22 +2,26 @@
 
 namespace App\Events;
 
-use App\Models\Order;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-class OrderPaidEvent
+use Illuminate\Broadcasting\BroadcastManager;
+
+class OrderNotification
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(
-        public Order $order
-    ) {
-        //
+    public function __construct()
+    {
+        $this->order = $order;
+        $this->userId = $order->user_id;
     }
 
     /**
@@ -27,8 +31,6 @@ class OrderPaidEvent
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('channel-name'),
-        ];
+        return new PrivateChannel('user.' . auth()->id());
     }
 }

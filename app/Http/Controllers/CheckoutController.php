@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\OrderService;
+
+use App\Services\Ordernotification;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
@@ -37,5 +39,9 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+        event(new OrderNotification(
+            $this->order->user_id,
+            'Pesanan sedang disiapkan ☕'
+        ));
     }
 }

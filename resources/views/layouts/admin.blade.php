@@ -161,12 +161,17 @@
                     </span>
                 @endif
             </a>
+            <a href="{{ route('admin.users.index') }}"
+                            class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                            <i class="bi bi-people me-2"></i> Pengguna
+                        </a>
 
             <div class="nav-section">Laporan</div>
 
             <a href="{{ route('admin.reports.sales') }}" class="nav-link">
                 <i class="bi bi-graph-up"></i> Penjualan
             </a>
+
         </nav>
 
         {{-- User Info --}}

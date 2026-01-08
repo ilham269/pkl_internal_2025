@@ -41,12 +41,13 @@
                     <div class="card-body">
                         <h2 class="h5 card-title mb-4">Ringkasan Pesanan</h2>
 
-                        <div class="mb-4" style="max-height: 300px; overflow-y: auto;">
+                        <div class="mb-3" style="max-height: 250px; overflow-y:auto;">
                             @foreach($cart->items as $item)
-                            <div class="d-flex justify-content-between mb-2 small text-muted">
-                                <span>{{ $item->product->name }} × {{ $item->quantity }}</span>
-                                <span class="fw-medium text-dark">Rp {{ number_format($item->subtotal, 0, ',', '.')
-                                    }}</span>
+                            <div class="d-flex justify-content-between small mb-2">
+                                <span>{{ $item->product->name }} x {{ $item->quantity }}</span>
+                                <span class="fw-semibold">
+                                    Rp {{ number_format($item->product->price, 0, ',', '.') }}
+                                </span>
                             </div>
                             @endforeach
                         </div>
@@ -55,8 +56,14 @@
 
                         <div class="d-flex justify-content-between mb-4">
                             <span class="h6 mb-0">Total</span>
-                            <span class="h6 mb-0 fw-bold">Rp {{ number_format($cart->items->sum('subtotal'), 0, ',',
-                                '.') }}</span>
+                            <span class="h6 mb-0 fw-bold">Rp {{
+    number_format(
+        $cart->items->sum(fn($item) =>
+            $item->product->price * $item->quantity
+        ),
+        0, ',', '.'
+    )
+}}</span>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-lg w-100 shadow-sm">

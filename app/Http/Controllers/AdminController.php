@@ -6,12 +6,51 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     /**
      * Tampilkan Dashboard Admin
      */
+    public function index()
+    {
+        $stats = [
+            'total_revenue' => Order::where('payment_status', 'paid')->sum('total_amount'),
+            'pending_orders' => Order::where('status', 'pending')->count(),
+            'low_stock' => Product::where('stock', '<=', 5)->count(),
+            'total_products' => Product::count(),
+        ];
+
+        $recentOrders = Order::with('user')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $topProducts = Product::select('products.*', DB::raw('SUM(order_items.quantity) as sold'))
+            ->join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->groupBy('products.id')
+            ->orderByDesc('sold')
+            ->take(6)
+            ->get();
+
+        $revenueChart = Order::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('SUM(total_amount) as total')
+        )
+            ->where('payment_status', 'paid')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->take(7)
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'stats',
+            'recentOrders',
+            'topProducts',
+            'revenueChart'
+        ));
+    }
     public function dashboard()
     {
         // Hitung statistik utama
