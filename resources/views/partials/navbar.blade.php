@@ -10,7 +10,7 @@
         <a class="navbar-brand d-flex align-items-center gap-2 fw-bold"
            href="{{ route('home') }}">
             <i class="bi bi-cup-hot-fill fs-3"></i>
-            <span class="fs-5">Ilham STORE</span>
+            <span class="fs-5">COFFERANCIS</span>
         </a>
 
         {{-- KATEGORI --}}

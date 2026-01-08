@@ -16,7 +16,7 @@
             {{-- Brand + Newsletter --}}
             <div class="col-lg-4 col-md-6">
                 <h5 class="footer-brand d-flex align-items-center gap-2">
-                    <i class="bi bi-cup-hot-fill"></i> CoffeeStore
+                    <i class="bi bi-cup-hot-fill"></i> COFFERANCIS
                 </h5>
 
                 <p class="footer-text small">
