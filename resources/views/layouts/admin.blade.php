@@ -162,10 +162,6 @@
                 @endif
             </a>
 
-            <a href="#" class="nav-link">
-                <i class="bi bi-people"></i> Pengguna
-            </a>
-
             <div class="nav-section">Laporan</div>
 
             <a href="{{ route('admin.reports.sales') }}" class="nav-link">

@@ -62,6 +62,7 @@ class CartService
             $cart->items()->create([
                 'product_id' => $product->id,
                 'quantity' => $quantity,
+                'price' => $product->price, // Simpan harga saat ini ke cart item
             ]);
         }
 
