@@ -119,12 +119,16 @@
                         </ul>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a class="btn btn-outline-primary px-4" href="{{ route('login') }}">Masuk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-primary px-4" href="{{ route('register') }}">Daftar</a>
-                    </li>
+                     <li class="nav-item">
+        <a class="btn btn-mocha px-4" href="{{ route('login') }}">
+            Masuk
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-mocha px-4" href="{{ route('register') }}">
+            Daftar
+        </a>
+    </li>
                 @endauth
 
             </ul>
@@ -134,6 +138,25 @@
 
 {{-- ================= STYLE ================= --}}
 <style>
+/* AUTH BUTTON */
+.btn-mocha {
+    background: var(--coffee-mocha);
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-weight: 500;
+    transition: all .25s ease;
+}
+
+.btn-mocha:hover {
+    background: #74492f; /* mocka lebih gelap */
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(139,94,60,.35);
+}
+
+
+
 :root {
     --latte-bg: rgba(247,239,230,.75);
     --dark-bg: rgba(20,14,10,.75);

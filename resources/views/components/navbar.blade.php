@@ -2,7 +2,37 @@
      FILE: resources/views/partials/navbar.blade.php
      FUNGSI: Navigation bar untuk customer
      ================================================ --}}
+<style>
+    :root {
+        --mocha-dark: #4b2e2b;
+        --mocha-dark-hover: #3a2422;
+    }
 
+    .nav-item{
+        min-width: 200px;
+        color: #000000;
+    }
+
+    .btn-mocha {
+        background-color: var(--mocha-dark);
+        color: #fff;
+        border: none;
+    }
+
+    .btn-mocha:hover {
+        background-color: var(--mocha-dark-hover);
+        color: #fff;
+    }
+
+    .link-mocha {
+        color: var(--mocha-dark);
+        font-weight: 500;
+    }
+
+    .link-mocha:hover {
+        color: var(--mocha-dark-hover);
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
     <div class="container">
         {{-- Logo & Brand --}}

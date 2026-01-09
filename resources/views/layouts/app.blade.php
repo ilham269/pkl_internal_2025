@@ -1,129 +1,207 @@
 {{-- ================================================
-     FILE: resources/views/layouts/app.blade.php
-     FUNGSI: Master layout untuk halaman customer/publik
-     ================================================ --}}
+FILE: resources/views/layouts/app.blade.php
+FUNGSI: Master layout MOCKA / COFFEE DARK
+================================================ --}}
 
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{-- CSRF Token untuk AJAX --}}
+    {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- SEO Meta Tags --}}
+    {{-- SEO --}}
     <title>@yield('title', 'Toko Online') - {{ config('app.name') }}</title>
-    <meta name="description" content="@yield('meta_description', 'Toko online terpercaya dengan produk berkualitas')">
+    <meta name="description" content="@yield('meta_description', 'Toko online kopi terpercaya')">
 
-    {{-- Favicon --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 
-    {{-- Google Fonts --}}
+    {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    {{-- Vite CSS --}}
+    {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Stack untuk CSS tambahan per halaman --}}
+    {{-- ================= MOCKA GLOBAL STYLE ================= --}}
+    <style>
+        :root {
+            --mocha: #8b5e3c;
+            --mocha-dark: #74492f;
+
+            /* DARK COFFEE (BUKAN HITAM) */
+            --bg-dark: #120d0a;
+            --bg-soft: #1a1410;
+            --bg-card: #201814;
+
+            --text-main: #e6d6c2;
+            --text-muted: #bfae9b;
+            --border: rgba(255,255,255,.08);
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ================= MAIN ================= */
+        main {
+            min-height: 100vh;
+            background: linear-gradient(
+                to bottom,
+                var(--bg-dark),
+                var(--bg-soft)
+            );
+        }
+
+        /* ================= CONTAINER ================= */
+        .container,
+        .container-fluid {
+            background: transparent;
+        }
+
+        /* ================= CARD ================= */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            box-shadow: 0 15px 40px rgba(0,0,0,.6);
+        }
+
+        /* ================= ALERT ================= */
+        .alert {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .alert-success { border-left: 4px solid #4ade80; }
+        .alert-danger { border-left: 4px solid #f87171; }
+
+        /* ================= LINK ================= */
+        a {
+            color: var(--mocha);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: var(--mocha-dark);
+        }
+
+        /* ================= BUTTON ================= */
+        .btn-primary {
+            background: var(--mocha);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--mocha-dark);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--mocha);
+            color: var(--mocha);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--mocha);
+            color: #fff;
+        }
+
+        /* ================= FORM ================= */
+        input, textarea, select {
+            background: rgba(255,255,255,.07) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-main) !important;
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background: #0e0a08;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+    </style>
+
     @stack('styles')
 </head>
 <body>
-    {{-- ============================================
-         NAVBAR
-         ============================================ --}}
+
+    {{-- NAVBAR --}}
     @include('partials.navbar')
 
-    {{-- ============================================
-         FLASH MESSAGES
-         ============================================ --}}
+    {{-- FLASH MESSAGE --}}
     <div class="container mt-3">
         @include('partials.flash-messages')
     </div>
 
-    {{-- ============================================
-         MAIN CONTENT
-         ============================================ --}}
-    <main class="min-vh-100">
+    {{-- MAIN CONTENT --}}
+    <main>
         @yield('content')
     </main>
 
-    {{-- ============================================
-         FOOTER
-         ============================================ --}}
+    {{-- FOOTER --}}
     @include('partials.footer')
 
-    {{-- Stack untuk JS tambahan per halaman --}}
     @stack('scripts')
+
+    {{-- ================= WISHLIST SCRIPT ================= --}}
     <script>
-  /**
-   * Fungsi AJAX untuk Toggle Wishlist
-   * Menggunakan Fetch API (Modern JS) daripada jQuery.
-   */
-  async function toggleWishlist(productId) {
-    try {
-      // 1. Ambil CSRF token dari meta tag HTML
-      // Laravale mewajibkan token ini untuk setiap request POST demi keamanan.
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+        async function toggleWishlist(productId) {
+            try {
+                const token = document.querySelector('meta[name="csrf-token"]').content;
 
-      // 2. Kirim Request ke Server
-      const response = await fetch(`/wishlist/toggle/${productId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": token, // Tempel token di header
-        },
-      });
+                const response = await fetch(`/wishlist/toggle/${productId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": token,
+                    },
+                });
 
-      // 3. Handle jika user belum login (Error 401 Unauthorized)
-      if (response.status === 401) {
-        window.location.href = "/login"; // Lempar ke halaman login
-        return;
-      }
+                if (response.status === 401) {
+                    window.location.href = "/login";
+                    return;
+                }
 
-      // 4. Baca respon JSON dari server
-      const data = await response.json();
+                const data = await response.json();
 
-      if (data.status === "success") {
-        // 5. Update UI tanpa reload halaman
-        updateWishlistUI(productId, data.added); // Ganti warna ikon
-        updateWishlistCounter(data.count); // Update angka di header
-        showToast(data.message); // Tampilkan notifikasi
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      showToast("Terjadi kesalahan sistem.", "error");
-    }
-  }
+                if (data.status === "success") {
+                    updateWishlistUI(productId, data.added);
+                    updateWishlistCounter(data.count);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
-  function updateWishlistUI(productId, isAdded) {
-    // Cari semua tombol wishlist untuk produk ini (bisa ada di card & detail page)
-    const buttons = document.querySelectorAll(`.wishlist-btn-${productId}`);
+        function updateWishlistUI(productId, isAdded) {
+            document.querySelectorAll(`.wishlist-btn-${productId}`).forEach(btn => {
+                const icon = btn.querySelector("i");
+                icon.className = isAdded
+                    ? "bi bi-heart-fill text-danger"
+                    : "bi bi-heart text-secondary";
+            });
+        }
 
-    buttons.forEach((btn) => {
-      const icon = btn.querySelector("i"); // Menggunakan tag <i> untuk Bootstrap Icons
-      if (isAdded) {
-        // Ubah jadi merah solid (Love penuh)
-        icon.classList.remove("bi-heart", "text-secondary");
-        icon.classList.add("bi-heart-fill", "text-danger");
-      } else {
-        // Ubah jadi abu-abu outline (Love kosong)
-        icon.classList.remove("bi-heart-fill", "text-danger");
-        icon.classList.add("bi-heart", "text-secondary");
-      }
-    });
-  }
+        function updateWishlistCounter(count) {
+            const badge = document.getElementById("wishlist-count");
+            if (badge) {
+                badge.innerText = count;
+                badge.style.display = count > 0 ? "inline-block" : "none";
+            }
+        }
+    </script>
 
-  function updateWishlistCounter(count) {
-    const badge = document.getElementById("wishlist-count");
-    if (badge) {
-      badge.innerText = count;
-      // Bootstrap badge display toggle logic
-      badge.style.display = count > 0 ? "inline-block" : "none";
-    }
-  }
-</script>
 </body>
 </html>

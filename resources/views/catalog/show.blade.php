@@ -1,6 +1,6 @@
 {{-- ================================================
  FILE: resources/views/catalog/show.blade.php
- THEME: Coffee / Mocha Premium Detail Page
+ THEME: Coffee / Mocha Premium Detail Page (FIXED)
  ================================================ --}}
 
 @extends('layouts.app')
@@ -81,6 +81,12 @@ body {
   border-radius: 999px;
 }
 
+/* ================= DESCRIPTION ================= */
+.product-description {
+  color: #f5efe6;
+  line-height: 1.8;
+}
+
 /* ================= RELATED ================= */
 .related-scroll {
   display: flex;
@@ -136,7 +142,7 @@ body {
         <small>({{ $product->reviews_count ?? 12 }} ulasan)</small>
       </div>
 
-      {{-- TAG INFO --}}
+      {{-- TAG --}}
       <div class="d-flex gap-2 mb-3">
         <span class="coffee-tag">{{ $product->bean_type ?? 'Arabica' }}</span>
         <span class="coffee-tag">{{ $product->roast_level ?? 'Medium Roast' }}</span>
@@ -147,10 +153,12 @@ body {
         {{ $product->formatted_price }}
       </div>
 
-      {{-- CART --}}
+      {{-- CART (FIX QUANTITY) --}}
       <form action="{{ route('cart.add') }}" method="POST" class="mb-4">
         @csrf
         <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <input type="hidden" name="quantity" value="1">
+
         <button class="btn btn-coffee w-100 btn-lg">
           <i class="bi bi-cart-plus me-2"></i> Tambah ke Keranjang
         </button>
@@ -159,7 +167,7 @@ body {
       <hr>
 
       {{-- DESCRIPTION --}}
-      <p class="text-muted">
+      <p class="product-description">
         {!! nl2br(e($product->description)) !!}
       </p>
 
