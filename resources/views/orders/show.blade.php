@@ -241,3 +241,4 @@ document.addEventListener('DOMContentLoaded', function () {
 @endpush
 @endif
 @endsection
+`

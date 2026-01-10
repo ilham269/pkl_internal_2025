@@ -83,7 +83,8 @@ class OrderController extends Controller
         // 2. Load relasi detail
         // Kita butuh data items dan gambar produknya untuk ditampilkan di invoice view.
         $order->load(['items.product', 'items.product.primaryImage']);
-
+        // HAPUS notif setelah halaman order dibuka
+        session()->pull('checkout_success');
         return view('orders.show', compact('order', 'snapToken'));
     }
 }

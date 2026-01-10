@@ -61,15 +61,39 @@
             <ul class="navbar-nav align-items-center gap-2 ms-lg-auto">
 
                 @auth
-                    {{-- NOTIF --}}
-                    <li class="nav-item">
-                        <a class="nav-link position-relative">
-                            <i class="bi bi-bell fs-5" style="color: #8b5e3c "></i>
-                            <span class="badge rounded-pill position-absolute top-0 start-100 translate-middle">
-                                0
-                            </span>
-                        </a>
-                    </li>
+                    <li class="nav-item dropdown">
+  <a class="nav-link position-relative" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-bell fs-5"></i>
+
+    @if(session('checkout_success'))
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        1
+      </span>
+    @endif
+  </a>
+
+  <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-4 p-2" style="width:280px">
+    <li class="dropdown-header fw-semibold">Notifikasi</li>
+
+    @if(session('checkout_success'))
+      <li style="color: #8b5e3c">
+        <a class="dropdown-item rounded-3" href="{{ route('orders.show', session('checkout_success.order_id')) }}">
+          <div class="fw-semibold text-dark">
+            {{ session('checkout_success.title') }}
+          </div>
+          <small class="text-muted">
+            {{ session('checkout_success.message') }}
+          </small>
+        </a>
+      </li>
+    @else
+      <li class="dropdown-item text-muted small" >
+        Tidak ada notifikasi
+      </li>
+    @endif
+  </ul>
+</li>
+
 
                     {{-- WISHLIST --}}
                     <li class="nav-item">

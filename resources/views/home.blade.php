@@ -31,7 +31,7 @@ body {
 
 .hero-img {
     width: 100%;
-    height: 320px;
+    height: 260px;
     object-fit: cover;
     filter: brightness(.85) contrast(1.05);
 }
@@ -87,6 +87,7 @@ body {
     background: linear-gradient(135deg, var(--mocha), var(--dark-brown));
     color: var(--latte);
     box-shadow: 0 16px 40px rgba(0,0,0,.5);
+    width: 205%;
 }
 
 /* ===== BUTTON ===== */
@@ -127,16 +128,16 @@ img {
         <div class="swiper heroSwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <img src="https://www.static-src.com/siva/asset/12_2025/carousel-desktop-NVIDIA-PC-Des.jpg?w=1200" class="hero-img">
+                    <img src="images/1.png" class="hero-img">
                 </div>
                 <div class="swiper-slide">
-                    <img src="https://www.static-src.com/siva/asset/12_2025/Homepage_Desktop_Asics-gelnimbus28.jpg?w=1200" class="hero-img">
+                    <img src="images/2.png" class="hero-img">
                 </div>
                 <div class="swiper-slide">
-                    <img src="https://www.static-src.com/siva/asset/12_2025/NPI-iPad-Pro-M5-dw2000x500.jpg?w=1200" class="hero-img">
+                    <img src="images/3.png" class="hero-img">
                 </div>
                 <div class="swiper-slide">
-                    <img src="https://www.static-src.com/siva/asset/12_2025/royco-blm-nov24-homepage-web.jpg?w=1200" class="hero-img">
+                    <img src="images/4.png" class="hero-img">
                 </div>
             </div>
             <div class="swiper-pagination"></div>
@@ -194,7 +195,14 @@ img {
 </section>
 
 {{-- PROMO --}}
-<section class="mb-5">
+<div class="container-fluid px-lg-5">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="promo-card p-4 h-100">
+
+                </div>
+            </div>
+{{-- <section class="mb-5">
     <div class="container-fluid px-lg-5">
         <div class="row g-4">
             <div class="col-md-6">
@@ -218,7 +226,7 @@ img {
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 
 {{-- PRODUK TERBARU --}}
 <section class="mb-5">

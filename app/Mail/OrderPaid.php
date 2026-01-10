@@ -1,9 +1,10 @@
 <?php
+// app/Mail/OrderPaid.php
 
 namespace App\Mail;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -11,43 +12,36 @@ use Illuminate\Queue\SerializesModels;
 
 class OrderPaid extends Mailable
 {
+    // Trait Queueable: Memungkinkan email ini dikirim melalui antrian (Queue)
+    // Trait SerializesModels: Penting saat passing Model Order ke Queue.
+    // Laravel hanya akan menyimpan ID Order di Queue, lalu mengambil ulang datanya saat Job diproses.
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct()
-    {
-        //
-    }
+    // Visibility PUBLIC agar bisa diakses langsung di file VIEW blade.
+    // Tidak perlu passing via with() di method content.
+    public function __construct(
+        public Order $order
+    ) {}
 
     /**
-     * Get the message envelope.
+     * Definisi Subjek dan Pengirim Email.
      */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Paid',
+            subject: 'Pembayaran Diterima - Order #' . $this->order->order_number,
         );
     }
 
     /**
-     * Get the message content definition.
+     * Definisi Isi Konten Email (View).
      */
     public function content(): Content
     {
         return new Content(
+            // Menggunakan Markdown view
+            // Lokasi: resources/views/emails/orders/paid.blade.php
             markdown: 'emails.orders.paid',
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

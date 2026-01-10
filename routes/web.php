@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\ContactController;
 
 // ================================================
 // ROUTE PUBLIK (Bisa diakses siapa saja)
@@ -40,6 +41,24 @@ use App\Http\Controllers\NewsletterController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+//kontak
+Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');
+Route::post('/kontak/kirim', [ContactController::class, 'store'])->name('kontak.kirim');
+
+
+
+Route::get('/kontak', function () {
+    return view('pages.kontak');
+})->name('kontak');
+
+
+Route::post('/checkout/direct', [CheckoutController::class, 'direct'])
+    ->name('checkout.direct')
+    ->middleware('auth');
+
+
+
 Route::post('/newsletter', [NewsletterController::class, 'store'])
     ->name('newsletter.store');
 

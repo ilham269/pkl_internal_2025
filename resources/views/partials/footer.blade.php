@@ -44,7 +44,7 @@
                 <ul class="list-unstyled small">
                     <li><a href="{{ route('catalog.index') }}" class="footer-link">Katalog</a></li>
                     <li><a href="#" class="footer-link">Tentang</a></li>
-                    <li><a href="#" class="footer-link">Kontak</a></li>
+                    <li><a href="{{route('kontak')}}" class="footer-link">Kontak</a></li>
                 </ul>
             </div>
 

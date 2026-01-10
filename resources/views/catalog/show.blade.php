@@ -99,7 +99,59 @@ body {
   scroll-snap-align: start;
   min-width: 220px;
 }
+/* ================= CHECKOUT BUTTON ================= */
+.btn-checkout {
+  background: linear-gradient(135deg, #a47148, #7b4a2e, #4b2e2b);
+  border: none;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(75,46,43,.35);
+  position: relative;
+  overflow: hidden;
+  transition: all .35s ease;
+}
+
+.btn-checkout::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.35),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: .6s;
+}
+
+.btn-checkout:hover::before {
+  transform: translateX(100%);
+}
+
+.btn-checkout:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(75,46,43,.45);
+}
+
+.btn-checkout small {
+  display: block;
+  font-weight: 500;
+  opacity: .85;
+  font-size: 12px;
+}
+
+/* Dark Mode */
+body.dark-coffee .btn-checkout {
+  box-shadow: 0 12px 30px rgba(0,0,0,.6);
+}
+
+
 </style>
+
 
 <div class="container py-4">
 
@@ -153,16 +205,37 @@ body {
         {{ $product->formatted_price }}
       </div>
 
-      {{-- CART (FIX QUANTITY) --}}
-      <form action="{{ route('cart.add') }}" method="POST" class="mb-4">
-        @csrf
-        <input type="hidden" name="product_id" value="{{ $product->id }}">
-        <input type="hidden" name="quantity" value="1">
+      {{-- CART & CHECKOUT --}}
+<div class="d-grid gap-3 mb-4">
 
-        <button class="btn btn-coffee w-100 btn-lg">
-          <i class="bi bi-cart-plus me-2"></i> Tambah ke Keranjang
-        </button>
-      </form>
+  {{-- CHECKOUT NOW (PRIMARY) --}}
+  <form action="{{ route('checkout.direct') }}" method="POST">
+    @csrf
+
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
+    <input type="hidden" name="qty" value="1">
+
+    <button type="submit" class="btn btn-checkout btn-lg w-100">
+        ☕ Beli Sekarang
+        <small>Nikmati kopi premium tanpa menunggu</small>
+    </button>
+</form>
+
+
+  {{-- ADD TO CART (SECONDARY) --}}
+  <form action="{{ route('cart.add') }}" method="POST">
+    @csrf
+    <input type="hidden" name="product_id" value="{{ $product->id }}">
+    <input type="hidden" name="quantity" value="1">
+
+    <button class="btn btn-coffee w-100 btn-lg">
+      <i class="bi bi-cart-plus me-2"></i> Tambah ke Keranjang
+    </button>
+  </form>
+
+</div>
+
+
 
       <hr>
 

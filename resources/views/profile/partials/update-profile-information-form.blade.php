@@ -1,12 +1,65 @@
-{{-- resources/views/profile/partials/update-profile-information-form.blade.php --}}
+<style>
+/* ================= FORM COFFEE THEME ================= */
+.coffee-form label {
+  font-weight: 600;
+  color: #4b2e2b;
+}
 
-<p class="text-muted small">Perbarui informasi profil dan alamat email kamu.</p>
+.coffee-form .form-control {
+  border-radius: 14px;
+  border: 1px solid rgba(75,46,43,.2);
+  padding: 10px 14px;
+}
+
+.coffee-form .form-control:focus {
+  border-color: #7b4a2e;
+  box-shadow: 0 0 0 .2rem rgba(123,74,46,.15);
+}
+
+.coffee-form .form-text {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* ================= DARK MODE ================= */
+body.dark-coffee .coffee-form label {
+  color: #f5efe6;
+}
+
+body.dark-coffee .coffee-form .form-control {
+  background: #1f1b18;
+  border-color: rgba(255,255,255,.2);
+  color: #f5efe6;
+}
+
+body.dark-coffee .coffee-form .form-control::placeholder {
+  color: rgba(245,239,230,.5);
+}
+
+body.dark-coffee .coffee-form .form-text {
+  color: rgba(245,239,230,.6);
+}
+
+/* ================= BUTTON ================= */
+.btn-coffee {
+  background: linear-gradient(135deg, #7b4a2e, #4b2e2b);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 28px;
+  font-weight: 600;
+  color: #fff;
+}
+</style>
+
+<p class="text-muted small mb-4">
+  Perbarui informasi profil dan alamat email kamu.
+</p>
 
 <form id="send-verification" method="post" action="">
     @csrf
 </form>
 
-<form method="post" action="{{ route('profile.update') }}">
+<form method="post" action="{{ route('profile.update') }}" class="coffee-form">
     @csrf
     @method('patch')
 
@@ -37,15 +90,16 @@
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
 
-        {{-- Email Verification Notice --}}
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div class="mt-2">
                 <p class="text-warning small mb-1">
                     Email kamu belum diverifikasi.
-                    <button form="send-verification" class="btn btn-link p-0 align-baseline text-decoration-none">
-                        Klik untuk kirim ulang email verifikasi.
+                    <button form="send-verification"
+                            class="btn btn-link p-0 align-baseline text-decoration-none">
+                        Kirim ulang email verifikasi
                     </button>
                 </p>
+
                 @if (session('status') === 'verification-link-sent')
                     <p class="text-success small fw-bold">
                         Link verifikasi baru telah dikirim ke email kamu.
@@ -67,11 +121,13 @@
         @error('phone')
             <div class="invalid-feedback">{{ $message }}</div>
         @enderror
-        <div class="form-text">Format: 08xxxxxxxxxx atau +628xxxxxxxxxx</div>
+        <div class="form-text">
+            Format: 08xxxxxxxxxx atau +628xxxxxxxxxx
+        </div>
     </div>
 
     {{-- Address --}}
-    <div class="mb-3">
+    <div class="mb-4">
         <label for="address" class="form-label">Alamat Lengkap</label>
         <textarea name="address"
                   id="address"
@@ -83,5 +139,7 @@
         @enderror
     </div>
 
-    <button type="submit" class="btn btn-primary">Simpan Informasi</button>
+    <button type="submit" class="btn btn-coffee">
+        💾 Simpan Informasi
+    </button>
 </form>
