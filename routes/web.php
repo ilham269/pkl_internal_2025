@@ -45,6 +45,12 @@ use App\Http\Controllers\ReviewController;
 // });
 
 
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+
+
+// ulasan produk
 Route::get('/products/{product}/reviews', [ReviewController::class, 'index'])
     ->name('reviews.index');
 
@@ -62,6 +68,10 @@ Route::post('/kontak/kirim', [ContactController::class, 'store'])->name('kontak.
 Route::get('/kontak', function () {
     return view('pages.kontak');
 })->name('kontak');
+
+Route::get('/tentang', function () {
+    return view('pages.tentang');
+})->name('tentang');
 
 
 Route::post('/checkout/direct', [CheckoutController::class, 'direct'])

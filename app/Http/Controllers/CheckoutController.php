@@ -34,8 +34,7 @@ class CheckoutController extends Controller
         try {
             $order = $orderService->createOrder(auth()->user(), $request->only(['name', 'phone', 'address']));
 
-            // Redirect ke halaman pembayaran (akan dibuat besok)
-            // Untuk sekarang, redirect ke detail order
+            
             return redirect()->route('orders.show', $order)
                 -> with('checkout_success', [
                 'title' => 'Checkout berhasil',
@@ -46,5 +45,5 @@ class CheckoutController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
-    
+
 }

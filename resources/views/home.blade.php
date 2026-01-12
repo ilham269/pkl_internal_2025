@@ -169,6 +169,7 @@ img {
                         </div>
                     </a>
                 </div>
+                
             @endforeach
         </div>
     </div>
@@ -195,13 +196,13 @@ img {
 </section>
 
 {{-- PROMO --}}
-<div class="container-fluid px-lg-5">
+{{-- <div class="container-fluid px-lg-5">
         <div class="row g-4">
             <div class="col-md-6">
                 <div class="promo-card p-4 h-100">
 
                 </div>
-            </div>
+            </div> --}}
 {{-- <section class="mb-5">
     <div class="container-fluid px-lg-5">
         <div class="row g-4">
@@ -242,6 +243,7 @@ img {
                 </div>
             @endforeach
         </div>
+
     </div>
 </section>
 

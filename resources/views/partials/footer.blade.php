@@ -26,7 +26,7 @@
                 {{-- Newsletter --}}
                 <form action="{{ route('newsletter.store') }}" method="POST" class="newsletter mt-3">
                     @csrf
-                    
+
 
                 </form>
             </div>
@@ -36,7 +36,7 @@
                 <h6 class="footer-title">Menu</h6>
                 <ul class="list-unstyled small">
                     <li><a href="{{ route('catalog.index') }}" class="footer-link">Katalog</a></li>
-                    <li><a href="#" class="footer-link">Tentang</a></li>
+                    <li><a href="{{ url ('tentang')}}" class="footer-link">Tentang</a></li>
                     <li><a href="{{route('kontak')}}" class="footer-link">Kontak</a></li>
                 </ul>
             </div>
