@@ -201,6 +201,23 @@ body {
                     </button>
                 </div>
                 @endif
+                    @foreach($order->items as $item)
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <div>
+        {{ $item->product->name }}
+        <br>
+        <small>Qty: {{ $item->quantity }}</small>
+    </div>
+
+    @if($order->status === 'completed')
+        <a href="{{ route('reviews.index', $item->product) }}"
+           class="btn btn-sm btn-outline-dark">
+            Beri Ulasan
+        </a>
+    @endif
+</div>
+@endforeach
+
             </div>
         </div>
     </div>

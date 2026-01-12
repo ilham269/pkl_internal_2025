@@ -150,6 +150,8 @@ body.dark-coffee .btn-checkout {
 }
 
 
+
+
 </style>
 
 
@@ -209,17 +211,6 @@ body.dark-coffee .btn-checkout {
 <div class="d-grid gap-3 mb-4">
 
   {{-- CHECKOUT NOW (PRIMARY) --}}
-  <form action="{{ route('checkout.direct') }}" method="POST">
-    @csrf
-
-    <input type="hidden" name="product_id" value="{{ $product->id }}">
-    <input type="hidden" name="qty" value="1">
-
-    <button type="submit" class="btn btn-checkout btn-lg w-100">
-        ☕ Beli Sekarang
-        <small>Nikmati kopi premium tanpa menunggu</small>
-    </button>
-</form>
 
 
   {{-- ADD TO CART (SECONDARY) --}}
@@ -251,22 +242,52 @@ body.dark-coffee .btn-checkout {
 
 {{-- REVIEWS --}}
 <div class="mt-5">
-  <h5>⭐ Ulasan Pelanggan</h5>
+    <h5 class="fw-bold mb-4">⭐ Ulasan Pelanggan</h5>
 
-  @forelse($product->reviews ?? [] as $review)
-    <div class="coffee-card p-3 mb-3">
-      <strong>{{ $review->user->name }}</strong>
-      <div class="rating-stars small">
-        @for($i=1;$i<=5;$i++)
-          <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
-        @endfor
-      </div>
-      <p class="small text-muted mb-0">{{ $review->comment }}</p>
-    </div>
-  @empty
-    <p class="text-muted">Belum ada ulasan.</p>
-  @endforelse
+    @forelse($product->reviews ?? [] as $review)
+        <div class="coffee-card p-3 mb-3">
+            <div class="d-flex align-items-start gap-3">
+
+                {{-- FOTO PROFIL --}}
+                <img
+                    src="https://ui-avatars.com/api/?name={{ urlencode($review->user->name) }}&background=4b2e2b&color=ffffff"
+                    alt="{{ $review->user->name }}"
+                    class="rounded-circle flex-shrink-0"
+                    width="48"
+                    height="48"
+                >
+
+                {{-- ISI REVIEW --}}
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong class="text-dark">
+                            {{ $review->user->name }}
+                        </strong>
+
+                        <small class="text-muted">
+                            {{ $review->created_at->diffForHumans() }}
+                        </small>
+                    </div>
+
+                    {{-- RATING --}}
+                    <div class="rating-stars mb-1">
+                        @for($i = 1; $i <= 5; $i++)
+                            <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                        @endfor
+                    </div>
+
+                    {{-- KOMENTAR --}}
+                    <p class="small text-secondary mb-0">
+                        {{ $review->comment ?: 'Tidak ada komentar.' }}
+                            </p>
+                </div>
+            </div>
+        </div>
+    @empty
+        <p class="text-muted">Belum ada ulasan.</p>
+    @endforelse
 </div>
+
 
 {{-- RELATED PRODUCTS --}}
 <div class="mt-5">

@@ -137,6 +137,8 @@ FUNGSI: Master layout MOCKA / COFFEE DARK
 </head>
 <body>
 
+    
+
     {{-- NAVBAR --}}
     @include('partials.navbar')
 

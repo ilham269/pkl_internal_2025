@@ -34,6 +34,8 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReviewController;
+
 
 // ================================================
 // ROUTE PUBLIK (Bisa diakses siapa saja)
@@ -41,6 +43,15 @@ use App\Http\Controllers\ContactController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+
+Route::get('/products/{product}/reviews', [ReviewController::class, 'index'])
+    ->name('reviews.index');
+
+Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])
+    ->middleware('auth')
+    ->name('reviews.store');
+
 
 //kontak
 Route::get('/kontak', [ContactController::class, 'index'])->name('kontak');

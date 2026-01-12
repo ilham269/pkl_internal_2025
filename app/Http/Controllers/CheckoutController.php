@@ -46,46 +46,5 @@ class CheckoutController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
-    public function direct(Request $request)
-    {
-        // Validasi data
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'qty'        => 'required|integer|min:1',
-        ]);
-
-        DB::beginTransaction();
-
-        try {
-            // Ambil produk
-            $product = \App\Models\Product::findOrFail($request->product_id);
-
-            // Buat order
-            $order = Order::create([
-                'user_id' => Auth::id(),
-                'total'   => $product->price * $request->qty,
-                'status'  => 'pending',
-            ]);
-
-            // Buat item order
-            OrderItem::create([
-                'order_id'  => $order->id,
-                'product_id' => $product->id,
-                'qty'       => $request->qty,
-                'price'     => $product->price,
-                'subtotal'  => $product->price * $request->qty,
-            ]);
-
-            DB::commit();
-
-            // Redirect ke halaman detail / checkout
-            return redirect()
-                ->route('orders.show', $order->id)
-                ->with('success', 'Berhasil checkout produk');
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return back()->with('error', 'Checkout gagal');
-        }
-    }
+    
 }

@@ -91,7 +91,8 @@ class CatalogController extends Controller
         $product = Product::available()
             ->with(['category', 'images']) // Load semua gambar galeri
             ->where('slug', $slug)
-            ->firstOrFail(); // 404 jika tidak ketemu
+            ->firstOrFail() // 404 jika tidak ketemu
+            ->load(['reviews.user']);
 
         return view('catalog.show', compact('product'));
     }

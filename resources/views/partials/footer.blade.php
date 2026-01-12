@@ -26,15 +26,8 @@
                 {{-- Newsletter --}}
                 <form action="{{ route('newsletter.store') }}" method="POST" class="newsletter mt-3">
                     @csrf
-                    <label class="small fw-semibold mb-2 d-block">
-                        ☕ Coffee Newsletter
-                    </label>
-                    <div class="input-group input-group-sm">
-                        <input type="email" name="email" class="form-control" placeholder="Email kamu" required>
-                        <button class="btn btn-coffee" type="submit">
-                            Langganan
-                        </button>
-                    </div>
+                    
+
                 </form>
             </div>
 
